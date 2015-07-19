@@ -3,7 +3,6 @@ const int OFF = 0;
 
 const int playPin = 11;
 const int recPin = 10;
-const int stopPin = 6;
 
 //For Timer
 const long duration = 3000;
@@ -25,13 +24,11 @@ void setup() {
   //Setup Pins' Mode
   pinMode(playPin, OUTPUT);
   pinMode(recPin, OUTPUT);
-  pinMode(stopPin, OUTPUT);
 
   //Start Serial Communication
   Serial.begin(9600);
   //Init Pins
   analogWrite(playPin, OFF);
-  analogWrite(stopPin, OFF);
 
   //rec once
   analogWrite(recPin, ON);
@@ -97,13 +94,7 @@ void interruppt(){
 
             Serial.println("interruppt");
             analogWrite(playPin, OFF);
-
-            analogWrite(stopPin, ON);
             delay(100);        
-            analogWrite(stopPin, OFF);
-
-            // st = now; //update the time
-            // analogWrite(playPin,ON);
             triggerSound();
 
 }
