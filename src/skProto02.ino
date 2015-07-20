@@ -6,7 +6,8 @@ const int recPin = 10;
 
 //For Timer
 const long duration = 4000; //playback duration
-const long ignore_time = 100;
+const long ignore_time = 150;
+const long double_click = 400;
 unsigned long st = 0;
 unsigned long now = 0;
 //State
@@ -29,11 +30,9 @@ void setup() {
   Serial.begin(9600);
   //Init Pins
   digitalWrite(playPin, LOW); //AnalogWrite → DigitalWrite 
+  //Rec when stary
+  // rec();
 
-  //rec once
-  analogWrite(recPin, ON);
-  delay(5000);
-  analogWrite(recPin, OFF);
 }
 
 void loop() {
@@ -42,9 +41,9 @@ void loop() {
 
 //rec by Serial message
   if (Serial.read() > 0) {
-    analogWrite(recPin, ON);
-    delay(5000);
-    analogWrite(recPin, OFF);
+
+    rec();
+
   }
 
 
@@ -67,12 +66,17 @@ if(playing==true){ //Check should stop or not the playbacking sound
 
       if(playing==false){
         /*Serial.println("Shocked");*/
-        Serial.println(shock);
-      triggerSound();
+        Serial.print(F("SHOCK: ")); Serial.println(shock);
+        triggerSound();
 
-      }else {
+      }else{
 
-          if( timer(ignore_time) ){
+          if( playing==true && timer(ignore_time) && !timer(double_click)){
+            int foo = now -st;
+            Serial.print(F("rec:"));  Serial.println(foo);
+            rec();
+
+          }else if( timer(ignore_time) ){
               interruppt();
           }
     }
@@ -102,10 +106,21 @@ void interruppt(){
 
 void triggerSound(){
 
+      Serial.println(F("triggerSound"));
       playing = true;
       st = now;
       count++;
       Serial.println(count);
       digitalWrite(playPin, HIGH);
+
+}
+
+
+void rec(){
+
+  playing = false;
+  analogWrite(recPin, ON);
+  delay(5000);
+  analogWrite(recPin, OFF);
 
 }
