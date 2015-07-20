@@ -5,8 +5,8 @@ const int playPin = 11;
 const int recPin = 10;
 
 //For Timer
-const long duration = 3000;
-const long ignore_time = 500;
+const long duration = 4000; //playback duration
+const long ignore_time = 100;
 unsigned long st = 0;
 unsigned long now = 0;
 //State
@@ -28,7 +28,7 @@ void setup() {
   //Start Serial Communication
   Serial.begin(9600);
   //Init Pins
-  analogWrite(playPin, OFF);
+  digitalWrite(playPin, LOW); //AnalogWrite → DigitalWrite 
 
   //rec once
   analogWrite(recPin, ON);
@@ -54,7 +54,7 @@ if(playing==true){ //Check should stop or not the playbacking sound
 
   if( timer(duration) ){ //If played 3sec, stop
     Serial.println("timer stop");
-    analogWrite(playPin, OFF);
+    digitalWrite(playPin, LOW);
     playing = false;
   }
 
@@ -93,7 +93,7 @@ boolean timer(long span){
 void interruppt(){
 
             Serial.println("interruppt");
-            analogWrite(playPin, OFF);
+            digitalWrite(playPin, LOW);
             delay(100);        
             triggerSound();
 
@@ -106,6 +106,6 @@ void triggerSound(){
       st = now;
       count++;
       Serial.println(count);
-      analogWrite(playPin, ON);
+      digitalWrite(playPin, HIGH);
 
 }
