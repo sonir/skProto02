@@ -3,6 +3,7 @@ const int OFF = 0;
 
 const int playPin = 11;
 const int recPin = 10;
+const int ledPin = 4;
 
 //For Timer
 const long duration = 4000; //playback duration
@@ -25,6 +26,7 @@ void setup() {
   //Setup Pins' Mode
   pinMode(playPin, OUTPUT);
   pinMode(recPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
   //Start Serial Communication
   Serial.begin(9600);
@@ -32,6 +34,8 @@ void setup() {
   digitalWrite(playPin, LOW); //AnalogWrite → DigitalWrite 
   //Rec when stary
   // rec();
+
+  blink();
 
 }
 
@@ -54,6 +58,7 @@ if(playing==true){ //Check should stop or not the playbacking sound
   if( timer(duration) ){ //If played 3sec, stop
     Serial.println("timer stop");
     digitalWrite(playPin, LOW);
+    digitalWrite(ledPin, LOW);
     playing = false;
   }
 
@@ -96,10 +101,11 @@ boolean timer(long span){
 
 void interruppt(){
 
-            Serial.println("interruppt");
-            digitalWrite(playPin, LOW);
-            delay(100);        
-            triggerSound();
+      Serial.println("interruppt");
+      digitalWrite(playPin, LOW);
+      digitalWrite(ledPin, LOW);
+      delay(100);        
+      triggerSound();
 
 }
 
@@ -112,15 +118,61 @@ void triggerSound(){
       count++;
       Serial.println(count);
       digitalWrite(playPin, HIGH);
+      digitalWrite(ledPin, HIGH);
 
 }
 
 
 void rec(){
 
+  blink();
   playing = false;
   analogWrite(recPin, ON);
   delay(5000);
   analogWrite(recPin, OFF);
+  digitalWrite(ledPin, LOW);
+
+}
+
+
+void blink(){
+
+  digitalWrite(ledPin, HIGH);
+  delay(50);
+  digitalWrite(ledPin, LOW);
+  delay(50);
+  digitalWrite(ledPin, HIGH);
+  delay(50);
+  digitalWrite(ledPin, LOW);
+  delay(50);
+  digitalWrite(ledPin, HIGH);
+  delay(50);
+  digitalWrite(ledPin, LOW);
+  delay(50);
+  digitalWrite(ledPin, HIGH);
+  delay(50);
+  digitalWrite(ledPin, LOW);
+  delay(50);
+
+
+  digitalWrite(ledPin, HIGH);
+  delay(100);
+  digitalWrite(ledPin, LOW);
+  delay(900);
+  digitalWrite(ledPin, HIGH);
+  delay(100);
+  digitalWrite(ledPin, LOW);
+  delay(900);
+  digitalWrite(ledPin, HIGH);
+  delay(100);
+  digitalWrite(ledPin, LOW);
+  delay(900);
+  digitalWrite(ledPin, HIGH);
+  delay(100);
+  digitalWrite(ledPin, LOW);
+ 
+  // delay(00);
+
+
 
 }
