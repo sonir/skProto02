@@ -6,7 +6,7 @@ const int recPin = 10;
 const int ledPin = 4;
 
 //For Timer
-const long duration = 4000; //playback duration
+const long duration = 2000; //playback duration
 const long ignore_time = 150;
 const long double_click = 400;
 unsigned long st = 0;
@@ -35,7 +35,7 @@ void setup() {
   //Rec when stary
   // rec();
 
-  blink();
+  //blink();
 
 }
 
@@ -117,6 +117,11 @@ void triggerSound(){
       st = now;
       count++;
       Serial.println(count);
+      //TO REMOVE BUG
+      digitalWrite(playPin, HIGH);
+      delay(5);
+      digitalWrite(playPin, LOW);
+      delay(5);
       digitalWrite(playPin, HIGH);
       digitalWrite(ledPin, HIGH);
 
@@ -128,7 +133,7 @@ void rec(){
   blink();
   playing = false;
   analogWrite(recPin, ON);
-  delay(5000);
+  delay(duration);
   analogWrite(recPin, OFF);
   digitalWrite(ledPin, LOW);
 
